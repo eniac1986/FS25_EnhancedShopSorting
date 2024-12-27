@@ -20,4 +20,13 @@
         <!-- Must be place before the actual mod script -->
         <sourceFile filename="EnhancedShopSorting.lua" />
     </extraSourceFiles>
+    <inputBinding>
+		<actionBinding action="SORT_SHOP">
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_s"/>
+		</actionBinding>
+    </inputBinding>
+
+    <actions>
+        <action name="SORT_SHOP" />
+	</actions>        
 </modDesc>
