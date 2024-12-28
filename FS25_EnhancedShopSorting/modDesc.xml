@@ -1,10 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <modDesc descVersion="91" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/NMC-TBone/xml-schema/main/modDesc.xsd">
     <author>w33zl</author>
-    <version>0.5.0.0-dev</version>
-    <title>
-        <en>[DEV] Enhanced Shop Sorting</en>
-    </title>
+        <title>
+            <en>[PREVIEW] Enhanced Shop Sorting</en>
+            <de>Verbesserte Shop-Sortierung</de>
+            <fr>Amélioration du tri des magasins</fr>
+        </title>
     <description>
 <en><![CDATA[
 Extends the vehicle shop with sorting options. The sorting options are (ascending or descending order):
@@ -14,11 +15,35 @@ Extends the vehicle shop with sorting options. The sorting options are (ascendin
 - Max speed
 - Weight
 
-To change the shop sorting options, all you need to do is press the "O" key (can be configured). 
+To change the shop sorting options, all you need to do is press the "O" key (can be configured) when you have the shop menu open. 
 
 In addition, the base game behaviour of grouping mod equipment separately at the end can be toggled on or off (in off mode, mod equipment are blended with the base game equipment according to the sort method). 
 ]]></en>
-    </description>
+    <de><![CDATA[
+Erweitert den Fahrzeugshop um Sortieroptionen. Die Sortiermöglichkeiten sind (aufsteigend oder absteigend):
+- Name
+- Preis
+- Leistung
+- Maximale Geschwindigkeit
+- Gewicht
+
+Um die Sortieroptionen des Shops zu ändern, müssen Sie nur die Taste "O" drücken (kann konfiguriert werden), wenn Sie das Shop-Menü geöffnet haben.
+
+Außerdem kann das Verhalten des Basisspiels, Mod-Ausrüstungen am Ende separat zu gruppieren, ein- oder ausgeschaltet werden (im ausgeschalteten Modus werden Mod-Ausrüstungen entsprechend der Sortiermethode mit den Basisspiel-Ausrüstungen vermischt).
+]]></de>
+<fr><![CDATA[
+Permet d'ajouter des options de tri à la boutique de véhicules. Les options de tri sont les suivantes (ordre croissant ou décroissant) :
+- Nom
+- Prix
+- Puissance
+- Vitesse maximale
+- Poids
+
+Pour modifier les options de tri de la boutique, il suffit d'appuyer sur la touche "O" (configurable) lorsque le menu de la boutique est ouvert.
+
+De plus, il est possible d'activer ou de désactiver le comportement du jeu de base qui consiste à regrouper les équipements mods séparément à la fin (en mode désactivé, les équipements mods sont mélangés aux équipements du jeu de base en fonction de la méthode de tri).
+]]></fr>
+</description>
     <iconFilename>icon_EnhancedShopSorting.dds</iconFilename>
     <!-- Change the line below to "false" if multiplayer is NOT supported -->
     <multiplayer supported="true" />
