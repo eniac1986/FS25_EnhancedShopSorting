@@ -33,7 +33,7 @@ In addition, the base game behaviour of grouping mod equipment separately at the
     </extraSourceFiles>
     <inputBinding>
 		<actionBinding action="SORT_SHOP">
-			<binding device="KB_MOUSE_DEFAULT" input="KEY_lshift KEY_s"/>
+			<binding device="KB_MOUSE_DEFAULT" input="KEY_o"/>
 		</actionBinding>
     </inputBinding>
 
