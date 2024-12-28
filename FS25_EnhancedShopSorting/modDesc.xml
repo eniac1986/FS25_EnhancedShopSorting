@@ -45,15 +45,11 @@ De plus, il est possible d'activer ou de désactiver le comportement du jeu de b
 ]]></fr>
 </description>
     <iconFilename>icon_EnhancedShopSorting.dds</iconFilename>
-    <!-- Change the line below to "false" if multiplayer is NOT supported -->
     <multiplayer supported="true" />
-    <!-- Uncommit the line below to activate language/translation files, also do not forget to rename "language_LANGCODE.xml" -->
     <!-- <l10n filenamePrefix="language" /> -->
     <extraSourceFiles>
         <sourceFile filename="lib/LogHelper.lua" />
-        <!-- Must be place before the ModHelper -->
         <sourceFile filename="lib/ModHelper.lua" />
-        <!-- Must be place before the actual mod script -->
         <sourceFile filename="EnhancedShopSorting.lua" />
     </extraSourceFiles>
     <inputBinding>
@@ -61,7 +57,6 @@ De plus, il est possible d'activer ou de désactiver le comportement du jeu de b
 			<binding device="KB_MOUSE_DEFAULT" input="KEY_o"/>
 		</actionBinding>
     </inputBinding>
-
     <actions>
         <action name="SORT_SHOP" />
 	</actions>        
