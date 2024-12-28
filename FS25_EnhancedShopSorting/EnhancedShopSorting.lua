@@ -95,6 +95,13 @@ function EnhancedShopSorting:sortDisplayItems(items)
         return applySortOptions(speed1 < speed2)
     end
 
+    sortCallbacks[SortMethod.POWER] = function(item1, item2)
+        local item1, item2 = getItems(item1, item2)
+        local speed1 = safeGetValue(item1, "specs.power")
+        local speed2 = safeGetValue(item2, "specs.power")
+        return applySortOptions(speed1 < speed2)
+    end    
+
     sortCallbacks[SortMethod.WEIGHT] = function(item1, item2)
         local item1, item2 = getItems(item1, item2)
         local weight1 = safeGetValue(item1, "specs.weight.componentMass") + safeGetValue(item1, "specs.weight.wheelMassDefaultConfig")
