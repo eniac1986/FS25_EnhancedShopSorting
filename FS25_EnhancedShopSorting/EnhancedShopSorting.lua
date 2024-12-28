@@ -14,7 +14,7 @@ EnhancedShopSorting = Mod:init()
 SortOrder = {}
 SortOrder.ASCENDING = 1
 SortOrder.DESCENDING = 2
-Enum(SortOrder)
+-- Enum(SortOrder)
 
 SortMethod = {}
 SortMethod.PRICE = 1
@@ -25,12 +25,12 @@ SortMethod.WEIGHT = 5
 -- SortMethod.CAPACITY = 6
 -- SortMethod.WORKINGWIDTH = 7
 -- SortMethod.WORKINGSPEED = 8
-Enum(SortMethod)
+-- Enum(SortMethod)
 
 GroupMethod = {}
 GroupMethod.NONE = 1
 GroupMethod.MODS = 2
-Enum(GroupMethod)
+-- Enum(GroupMethod)
 
 function EnhancedShopSorting:sortDisplayItems(items)
     Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d", self.sortOrder, self.sortMethod, self.groupMethod)
@@ -146,6 +146,11 @@ function EnhancedShopSorting:initMission()
     self.sortOrder = SortOrder.ASCENDING
     self.sortMethod = SortMethod.PRICE
     self.groupMethod = GroupMethod.MODS
+
+    EnhancedShopSorting.enumToName = {}
+    EnhancedShopSorting.enumToName[SortMethod] = "sortMethod"
+    EnhancedShopSorting.enumToName[SortOrder] = "sortOrder"
+    EnhancedShopSorting.enumToName[GroupMethod] = "groupMethod"
 end
 
 function EnhancedShopSorting:getItemsByCategory(shopController, superFunc, ...)
@@ -172,12 +177,17 @@ end
 
 function EnhancedShopSorting:showDialog()
 
-    local dialogTitle = "Enhanced Shop Sort" --TODO: l10n
+    local dialogTitle = g_i18n:getText("dialogTitle") or g_modManager.nameToMod[g_currentModName].title
 
     local function getOptionsTranslated(enum)
         local options = {}
+        local enumName = self.enumToName[enum]
         for i = 1, EnumUtil.getNumEntries(enum) do
-            options[i] = EnumUtil.getName(enum, i)
+            local itemName = EnumUtil.getName(enum, i) or "UNKNOWN"
+            local translationKey = string.format("enum_%s_%s", enumName, itemName:lower())
+            -- Log:debug("enum: %s, index %d, itemName: %s, translationKey: %s", enumName, i, itemName, translationKey)
+            -- Log:var("translationKey" , translationKey)
+            options[i] = g_i18n:getText(translationKey)
         end
         return options
         
@@ -193,7 +203,7 @@ function EnhancedShopSorting:showDialog()
         OptionDialog.INSTANCE.optionElement:setState( currentState or 1)
     end
 
-    showOption("Choose SORT METHOD:", self.sortMethod, SortMethod, function(chosenMethod)
+    showOption(g_i18n:getText("choose_sortMethod"), self.sortMethod, SortMethod, function(chosenMethod)
         Log:debug("callbackFunc state: %s", chosenMethod)
         
         if chosenMethod == 0 then
@@ -204,7 +214,7 @@ function EnhancedShopSorting:showDialog()
 
         -- Log:debug("self.sortMethod: %s", self.sortMethod)
 
-        showOption("Choose SORT ORDER:", self.sortOrder, SortOrder, function(chosenOrder)
+        showOption(g_i18n:getText("choose_sortOrder"), self.sortOrder, SortOrder, function(chosenOrder)
             Log:debug("callbackFunc state: %s", chosenOrder)
 
             if chosenOrder == 0 then
@@ -213,7 +223,7 @@ function EnhancedShopSorting:showDialog()
 
             self.sortOrder = chosenOrder
     
-            showOption("Should mod equipment be grouped after base game items?", self.groupMethod, GroupMethod, function(chosenGrouping)
+            showOption(g_i18n:getText("choose_groupMethod"), self.groupMethod, GroupMethod, function(chosenGrouping)
                 Log:debug("callbackFunc state: %s", chosenGrouping)
 
                 if chosenGrouping == 0 then

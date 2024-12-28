@@ -46,7 +46,7 @@ De plus, il est possible d'activer ou de désactiver le comportement du jeu de b
 </description>
     <iconFilename>icon_EnhancedShopSorting.dds</iconFilename>
     <multiplayer supported="true" />
-    <!-- <l10n filenamePrefix="language" /> -->
+    <l10n filenamePrefix="translation" />
     <extraSourceFiles>
         <sourceFile filename="lib/LogHelper.lua" />
         <sourceFile filename="lib/ModHelper.lua" />
