@@ -3,16 +3,13 @@ SHORT DESCRIPTION OF WHAT YOUR MOD DOES GOES HERE
 
 Author:     YOUR NAME/NICKNAME
 Version:    1.0.0
-Modified:   2024-12-27
+Modified:   2024-12-28
 
 Changelog:
 
 ]]
 
 EnhancedShopSorting = Mod:init()
-
-Log:info("This is a test") -- This will output one line in the log with a prefix of your mod's name (requires the LogHelper.lua to be referenced in modDesc.xml)
-Log:debug("This only works in 'debug' mode") -- This will output one line in the log only if you have the DebugHelper.lua in your lib folder
 
 SortOrder = {}
 SortOrder.ASCENDING = 1
@@ -24,10 +21,10 @@ SortMethod.PRICE = 1
 SortMethod.NAME = 2
 SortMethod.SPEED = 3
 SortMethod.POWER = 4
-SortMethod.CAPACITY = 5
-SortMethod.WORKINGWIDTH = 6
-SortMethod.WORKINGSPEED = 7
-SortMethod.WEIGHT = 8
+SortMethod.WEIGHT = 5
+-- SortMethod.CAPACITY = 6
+-- SortMethod.WORKINGWIDTH = 7
+-- SortMethod.WORKINGSPEED = 8
 Enum(SortMethod)
 
 GroupMethod = {}
@@ -288,55 +285,55 @@ function EnhancedShopSorting:showDialog()
     end)
 end
 
-function EnhancedShopSorting:showDialog2()
+-- function EnhancedShopSorting:showDialog2()
 
     
     
 
-    local function showOptionDialog(callback)
-        OptionDialog.createFromExistingGui({
-            callbackFunc = callback,
-            optionText = "Enhanced Shop Sort",
-            optionTitle = "Choose sort option to change:",
-            options = {
-                "Sort Method [" .. EnumUtil.getName(SortMethod, self.sortMethod) .. "]",
-                "Sort Order [" .. EnumUtil.getName(SortOrder, self.sortOrder) .. "]",
-                "Grouping Method [" .. EnumUtil.getName(GroupMethod, self.groupMethod) .. "]",
-            }
-        })
+--     local function showOptionDialog(callback)
+--         OptionDialog.createFromExistingGui({
+--             callbackFunc = callback,
+--             optionText = "Enhanced Shop Sort",
+--             optionTitle = "Choose sort option to change:",
+--             options = {
+--                 "Sort Method [" .. EnumUtil.getName(SortMethod, self.sortMethod) .. "]",
+--                 "Sort Order [" .. EnumUtil.getName(SortOrder, self.sortOrder) .. "]",
+--                 "Grouping Method [" .. EnumUtil.getName(GroupMethod, self.groupMethod) .. "]",
+--             }
+--         })
         
-    end
+--     end
 
-    local function dialogCallback(state)
-        Log:debug("callbackFunc state: %s", state)
-        if state == 0 then
-            g_shopMenu.pageShopItemDetails:setDisplayItems(g_shopMenu.currentDisplayItems)
-            return
-        elseif state == 1 then
-            EnhancedShopSorting.sortMethod = self.sortMethod + 1
-            if EnhancedShopSorting.sortMethod > 8 then
-                EnhancedShopSorting.sortMethod = 1
-            end
-        elseif state == 2 then
-            EnhancedShopSorting.sortOrder = EnhancedShopSorting.sortOrder + 1
-            if EnhancedShopSorting.sortOrder > 2 then
-                EnhancedShopSorting.sortOrder = 1
-            end
-        elseif state == 3 then
-            EnhancedShopSorting.groupMethod = EnhancedShopSorting.groupMethod + 1
-            if EnhancedShopSorting.groupMethod > 2 then
-                EnhancedShopSorting.groupMethod = 1
-            end
-        end
-        -- showOptionDialog(dialogCallback)
+--     local function dialogCallback(state)
+--         Log:debug("callbackFunc state: %s", state)
+--         if state == 0 then
+--             g_shopMenu.pageShopItemDetails:setDisplayItems(g_shopMenu.currentDisplayItems)
+--             return
+--         elseif state == 1 then
+--             EnhancedShopSorting.sortMethod = self.sortMethod + 1
+--             if EnhancedShopSorting.sortMethod > 8 then
+--                 EnhancedShopSorting.sortMethod = 1
+--             end
+--         elseif state == 2 then
+--             EnhancedShopSorting.sortOrder = EnhancedShopSorting.sortOrder + 1
+--             if EnhancedShopSorting.sortOrder > 2 then
+--                 EnhancedShopSorting.sortOrder = 1
+--             end
+--         elseif state == 3 then
+--             EnhancedShopSorting.groupMethod = EnhancedShopSorting.groupMethod + 1
+--             if EnhancedShopSorting.groupMethod > 2 then
+--                 EnhancedShopSorting.groupMethod = 1
+--             end
+--         end
+--         -- showOptionDialog(dialogCallback)
         
-    end
+--     end
 
-    -- if false then dialogCallback() end
+--     -- if false then dialogCallback() end
 
-    showOptionDialog(dialogCallback)
+--     showOptionDialog(dialogCallback)
 
-end
+-- end
 
 function EnhancedShopSorting:keyDummy()
     Log:debug("EnhancedShopSorting.keyDummy")
@@ -362,9 +359,9 @@ function EnhancedShopSorting:registerHotkeys()
     
 end
 
-PlayerInputComponent.registerGlobalPlayerActionEvents = Utils.appendedFunction(PlayerInputComponent.registerGlobalPlayerActionEvents, function()
-    EnhancedShopSorting:keyDummy()
-end)
+-- PlayerInputComponent.registerGlobalPlayerActionEvents = Utils.appendedFunction(PlayerInputComponent.registerGlobalPlayerActionEvents, function()
+--     EnhancedShopSorting:keyDummy()
+-- end)
 
 -- function EnhancedShopSorting:setDisplayItems(self, superFunc, items, ...)
 
@@ -372,8 +369,8 @@ end)
 -- end
 
 ShopItemsFrame.setDisplayItems = Utils.overwrittenFunction(ShopItemsFrame.setDisplayItems, function(self, superFunc, items, ...)
-    Log:debug("ShopItemsFrame.setDisplayItems")
-    Log:var("items", items)
+    -- Log:debug("ShopItemsFrame.setDisplayItems")
+    -- Log:var("items", items)
     if items and #items > 0 then 
         EnhancedShopSorting:sortDisplayItems(items)
     end
@@ -386,33 +383,33 @@ end)
 -- end)
 
 
-ShopMenu.onOpen = Utils.overwrittenFunction(ShopMenu.onOpen, function(self, superFunc, ...)
-    Log:debug("ShopMenu.onOpen")
-    return superFunc(self, ...)
-end)
+-- ShopMenu.onOpen = Utils.overwrittenFunction(ShopMenu.onOpen, function(self, superFunc, ...)
+--     Log:debug("ShopMenu.onOpen")
+--     return superFunc(self, ...)
+-- end)
 
-ShopMenu.onClose = Utils.overwrittenFunction(ShopMenu.onClose, function(self, superFunc, ...)
-    Log:debug("ShopMenu.onClose")
-    return superFunc(self, ...)
-end)
+-- ShopMenu.onClose = Utils.overwrittenFunction(ShopMenu.onClose, function(self, superFunc, ...)
+--     Log:debug("ShopMenu.onClose")
+--     return superFunc(self, ...)
+-- end)
 
--- ShopMenu.onClickMenu = Utils.overwrittenFunction
+-- -- ShopMenu.onClickMenu = Utils.overwrittenFunction
 
-ShopMenu.exitMenu = Utils.overwrittenFunction(ShopMenu.exitMenu, function(self, superFunc, ...)
-    Log:debug("ShopMenu.exitMenu")
-    return superFunc(self, ...)
-end)
+-- ShopMenu.exitMenu = Utils.overwrittenFunction(ShopMenu.exitMenu, function(self, superFunc, ...)
+--     Log:debug("ShopMenu.exitMenu")
+--     return superFunc(self, ...)
+-- end)
 
-ShopMenu.onClickItemCategory = Utils.overwrittenFunction(ShopMenu.onClickItemCategory, function(self, superFunc, ...)
-    Log:debug("ShopMenu.onClickItemCategory")
-    return superFunc(self, ...)
-end)
+-- ShopMenu.onClickItemCategory = Utils.overwrittenFunction(ShopMenu.onClickItemCategory, function(self, superFunc, ...)
+--     Log:debug("ShopMenu.onClickItemCategory")
+--     return superFunc(self, ...)
+-- end)
 
 TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.onOpen, function(self, superFunc, ...)
-    Log:debug("TabbedMenuWithDetails.onOpen")
+    -- Log:debug("TabbedMenuWithDetails.onOpen")
     
     local returnValue superFunc(self, ...)
-    Log:var("g_shopMenu.isOpen", g_shopMenu.isOpen)
+    -- Log:var("g_shopMenu.isOpen", g_shopMenu.isOpen)
     if g_shopMenu.isOpen then
         EnhancedShopSorting:registerHotkeys()
     end
@@ -420,7 +417,7 @@ TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.o
     return returnValue
 end)
 
-TabbedMenuWithDetails.onDetailOpened = Utils.overwrittenFunction(TabbedMenuWithDetails.onDetailOpened, function(self, superFunc, ...)
-    Log:debug("TabbedMenuWithDetails.onDetailOpened")
-    return superFunc(self, ...)
-end)
+-- TabbedMenuWithDetails.onDetailOpened = Utils.overwrittenFunction(TabbedMenuWithDetails.onDetailOpened, function(self, superFunc, ...)
+--     Log:debug("TabbedMenuWithDetails.onDetailOpened")
+--     return superFunc(self, ...)
+-- end)
