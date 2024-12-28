@@ -335,32 +335,31 @@ end
 
 -- end
 
-function EnhancedShopSorting:keyDummy()
+function EnhancedShopSorting:mainKeyEvent()
     Log:debug("EnhancedShopSorting.keyDummy")
     if g_shopMenu.isOpen then
         self:showDialog()
     end
-    -- self:showDialog()
 end
 
 function EnhancedShopSorting:registerHotkeys()
-    Log:debug("EnhancedShopSorting.registerHotkeys")
+    -- Log:debug("EnhancedShopSorting.registerHotkeys")
     local triggerUp, triggerDown, triggerAlways, startActive, callbackState, disableConflictingBindings = false, true, false, true, nil, true
-    local success, actionEventId, otherEvents = g_inputBinding:registerActionEvent(InputAction.SORT_SHOP, self, self.keyDummy, triggerUp, triggerDown, triggerAlways, startActive, callbackState, disableConflictingBindings)
+    local success, actionEventId, otherEvents = g_inputBinding:registerActionEvent(InputAction.SORT_SHOP, self, self.mainKeyEvent, triggerUp, triggerDown, triggerAlways, startActive, callbackState, disableConflictingBindings)
 
     if success then
         Log:debug("Registered main key for EnhancedShopSorting")
-        g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_VERY_HIGH)
-    else
-        Log:debug("Failed to register main key for EnhancedShopSorting")
-        Log:var("state", success)
-        Log:var("actionId", actionEventId)
+        g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_VERY_LOW)
+    -- else
+    --     Log:debug("Failed to register main key for EnhancedShopSorting")
+    --     Log:var("state", success)
+    --     Log:var("actionId", actionEventId)
     end    
     
 end
 
 -- PlayerInputComponent.registerGlobalPlayerActionEvents = Utils.appendedFunction(PlayerInputComponent.registerGlobalPlayerActionEvents, function()
---     EnhancedShopSorting:keyDummy()
+--     EnhancedShopSorting:mainKeyEvent()
 -- end)
 
 -- function EnhancedShopSorting:setDisplayItems(self, superFunc, items, ...)
