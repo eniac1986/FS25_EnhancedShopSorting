@@ -184,22 +184,22 @@ function EnhancedShopSorting:initMission()
     self.sortMethod = SortMethod.PRICE
     self.groupMethod = GroupMethod.MODS
 
-    Log:var("g_shopMenu", g_shopMenu)
+    -- Log:var("g_shopMenu", g_shopMenu)
 
-    g_shopMenu.onOpen = Utils.overwrittenFunction(g_shopMenu.onOpen, function(self, superFunc, ...)
-        Log:debug("g_shopMenu.onOpen")
-        return superFunc(self, ...)
-    end)
+    -- g_shopMenu.onOpen = Utils.overwrittenFunction(g_shopMenu.onOpen, function(self, superFunc, ...)
+    --     Log:debug("g_shopMenu.onOpen")
+    --     return superFunc(self, ...)
+    -- end)
     
-    g_shopMenu.onClose = Utils.overwrittenFunction(g_shopMenu.onClose, function(self, superFunc, ...)
-        Log:debug("g_shopMenu.onClose")
-        return superFunc(self, ...)
-    end)
+    -- g_shopMenu.onClose = Utils.overwrittenFunction(g_shopMenu.onClose, function(self, superFunc, ...)
+    --     Log:debug("g_shopMenu.onClose")
+    --     return superFunc(self, ...)
+    -- end)
     
-    g_shopMenu.onClickItemCategory = Utils.overwrittenFunction(g_shopMenu.onClickItemCategory, function(self, superFunc, ...)
-        Log:debug("g_shopMenu.onClickItemCategory")
-        return superFunc(self, ...)
-    end)
+    -- g_shopMenu.onClickItemCategory = Utils.overwrittenFunction(g_shopMenu.onClickItemCategory, function(self, superFunc, ...)
+    --     Log:debug("g_shopMenu.onClickItemCategory")
+    --     return superFunc(self, ...)
+    -- end)
     
 end
 
@@ -219,9 +219,9 @@ function EnhancedShopSorting:getItemsByCategory(shopController, superFunc, ...)
     table.sort(items, sortItems_byPrice)
 
 
-    for i = 1, #items do
-        Log:debug("#%d: %s [%d]: %d", i, items[i].storeItem.name, items[i].storeItem.id, items[i].orderValue)
-    end
+    -- for i = 1, #items do
+    --     Log:debug("#%d: %s [%d]: %d", i, items[i].storeItem.name, items[i].storeItem.id, items[i].orderValue)
+    -- end
 
     return items
 end
@@ -246,7 +246,7 @@ function EnhancedShopSorting:showDialog()
             optionTitle = dialogTitle,
             options = getOptionsTranslated(enum),
         })
-        Log:var("currentState", currentState)
+        -- Log:var("currentState", currentState)
         OptionDialog.INSTANCE.optionElement:setState( currentState or 1)
     end
 
@@ -259,7 +259,7 @@ function EnhancedShopSorting:showDialog()
 
         self.sortMethod = chosenMethod
 
-        Log:debug("self.sortMethod: %s", self.sortMethod)
+        -- Log:debug("self.sortMethod: %s", self.sortMethod)
 
         showOption("Choose SORT ORDER:", self.sortOrder, SortOrder, function(chosenOrder)
             Log:debug("callbackFunc state: %s", chosenOrder)
