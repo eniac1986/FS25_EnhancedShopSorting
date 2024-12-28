@@ -32,19 +32,7 @@ GroupMethod.NONE = 1
 GroupMethod.MODS = 2
 Enum(GroupMethod)
 
-
--- -- Event that is executed when your mod is loading (after the map has been loaded and before the game starts)
--- function EnhancedShopSorting:loadMap(filename)
--- end
-
--- -- Event that is executed when the player chooses to start the mission (after the map has been loaded and before the game starts)
--- function EnhancedShopSorting:startMission()
--- end
-
-
-
 function EnhancedShopSorting:sortDisplayItems(items)
-    -- Log:debug("EnhancedShopSorting.sortDisplayItems")
     Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d", self.sortOrder, self.sortMethod, self.groupMethod)
 
     if items == nil then
@@ -53,8 +41,6 @@ function EnhancedShopSorting:sortDisplayItems(items)
     end    
     
     local SORT_ORDER_ASC = (self.sortOrder == SortOrder.ASCENDING)
-
-    
 
     local function applySortOptions(sortValue)
         if SORT_ORDER_ASC then
@@ -79,28 +65,16 @@ function EnhancedShopSorting:sortDisplayItems(items)
         end
     
         return t or default
-        
-        -- local specs = item1 and item1.specs
-        -- if specs == nil then
-        --     return 0
-        -- end
-        -- return specs[namedValue] or 0
     end
 
     local sortCallbacks = {}
-    local isFirst = true
 
     local function getItems(item1, item2)
         return item1.storeItem or item1, item2.storeItem or item2
     end
 
     local function defaultDelegate(item1, item2)
-        -- if isFirst then 
-        --     isFirst = false
-        --     Log:table("item1", item1, 1)
-        -- end
         local item1, item2 = getItems(item1, item2)
-        -- Log:debug("item1.price: %d, item2.price: %d", item1.price, item2.price)
         return  item1.price <  item2.price
     end
 
@@ -118,9 +92,6 @@ function EnhancedShopSorting:sortDisplayItems(items)
         local item1, item2 = getItems(item1, item2)
         local speed1 = safeGetValue(item1, "specs.maxSpeed")
         local speed2 = safeGetValue(item2, "specs.maxSpeed")
-
-        -- Log:debug("speed1: %d, speed2: %d", speed1, speed2)
-        
         return applySortOptions(speed1 < speed2)
     end
 
@@ -128,9 +99,6 @@ function EnhancedShopSorting:sortDisplayItems(items)
         local item1, item2 = getItems(item1, item2)
         local weight1 = safeGetValue(item1, "specs.weight.componentMass") + safeGetValue(item1, "specs.weight.wheelMassDefaultConfig")
         local weight2 = safeGetValue(item2, "specs.weight.componentMass") + safeGetValue(item2, "specs.weight.wheelMassDefaultConfig")
-
-        -- Log:debug("#%d: weight1: %d, weight2: %d", item1.id, weight1, weight2)
-        
         return applySortOptions(weight1 < weight2)
     end
 
@@ -147,25 +115,13 @@ function EnhancedShopSorting:sortDisplayItems(items)
                     return sortDelegate(item1, item2)
                 end
                 
-                -- Log:debug("Item 1 is mod: %s, Item 2 is mod: %s", tostring(item1.isMod), tostring(item2.isMod))
-                -- return applySortOptions(not item1.isMod and item2.isMod)
-                return not item1.isMod and item2.isMod
-        
+                return not item1.isMod and item2.isMod        
             end)
         else
             -- Log:debug("GroupMethod.NONE")
             table.sort(items, sortDelegate)
         end
 
-        -- -- Secondary sort based on group method
-        -- if self.groupMethod == GroupMethod.MODS then
-        --     table.sort(items, function(item1, item2)
-        --         local item1 = item1.storeItem or item1
-        --         local item2 = item2.storeItem or item2
-        --         return not item1.isMod and item2.isMod
-        --     end)
-        -- end
-        
     else
         Log:warning("Sort method not implemented: %s [%d]", SortMethod.getName(self.sortMethod), self.sortMethod)
     end
@@ -183,28 +139,10 @@ function EnhancedShopSorting:initMission()
     self.sortOrder = SortOrder.ASCENDING
     self.sortMethod = SortMethod.PRICE
     self.groupMethod = GroupMethod.MODS
-
-    -- Log:var("g_shopMenu", g_shopMenu)
-
-    -- g_shopMenu.onOpen = Utils.overwrittenFunction(g_shopMenu.onOpen, function(self, superFunc, ...)
-    --     Log:debug("g_shopMenu.onOpen")
-    --     return superFunc(self, ...)
-    -- end)
-    
-    -- g_shopMenu.onClose = Utils.overwrittenFunction(g_shopMenu.onClose, function(self, superFunc, ...)
-    --     Log:debug("g_shopMenu.onClose")
-    --     return superFunc(self, ...)
-    -- end)
-    
-    -- g_shopMenu.onClickItemCategory = Utils.overwrittenFunction(g_shopMenu.onClickItemCategory, function(self, superFunc, ...)
-    --     Log:debug("g_shopMenu.onClickItemCategory")
-    --     return superFunc(self, ...)
-    -- end)
-    
 end
 
 function EnhancedShopSorting:getItemsByCategory(shopController, superFunc, ...)
-    Log:debug("ShopController.getItemsByCategory")
+    -- Log:debug("ShopController.getItemsByCategory")
 
     local items = superFunc(shopController, ...)
 
@@ -217,7 +155,6 @@ function EnhancedShopSorting:getItemsByCategory(shopController, superFunc, ...)
     end
 
     table.sort(items, sortItems_byPrice)
-
 
     -- for i = 1, #items do
     --     Log:debug("#%d: %s [%d]: %d", i, items[i].storeItem.name, items[i].storeItem.id, items[i].orderValue)
@@ -242,11 +179,10 @@ function EnhancedShopSorting:showDialog()
     local function showOption(text, currentState, enum, callback)
         OptionDialog.createFromExistingGui({
             callbackFunc = callback,
-            optionText = text, --TODO: l10n
+            optionText = text,
             optionTitle = dialogTitle,
             options = getOptionsTranslated(enum),
         })
-        -- Log:var("currentState", currentState)
         OptionDialog.INSTANCE.optionElement:setState( currentState or 1)
     end
 
@@ -278,62 +214,11 @@ function EnhancedShopSorting:showDialog()
                 end
 
                 self.groupMethod = chosenGrouping
-                    -- EnhancedShopSorting:sortDisplayItems(g_shopMenu.currentDisplayItems)
                 EnhancedShopSorting:updateDisplayItems()
             end)
         end)
     end)
 end
-
--- function EnhancedShopSorting:showDialog2()
-
-    
-    
-
---     local function showOptionDialog(callback)
---         OptionDialog.createFromExistingGui({
---             callbackFunc = callback,
---             optionText = "Enhanced Shop Sort",
---             optionTitle = "Choose sort option to change:",
---             options = {
---                 "Sort Method [" .. EnumUtil.getName(SortMethod, self.sortMethod) .. "]",
---                 "Sort Order [" .. EnumUtil.getName(SortOrder, self.sortOrder) .. "]",
---                 "Grouping Method [" .. EnumUtil.getName(GroupMethod, self.groupMethod) .. "]",
---             }
---         })
-        
---     end
-
---     local function dialogCallback(state)
---         Log:debug("callbackFunc state: %s", state)
---         if state == 0 then
---             g_shopMenu.pageShopItemDetails:setDisplayItems(g_shopMenu.currentDisplayItems)
---             return
---         elseif state == 1 then
---             EnhancedShopSorting.sortMethod = self.sortMethod + 1
---             if EnhancedShopSorting.sortMethod > 8 then
---                 EnhancedShopSorting.sortMethod = 1
---             end
---         elseif state == 2 then
---             EnhancedShopSorting.sortOrder = EnhancedShopSorting.sortOrder + 1
---             if EnhancedShopSorting.sortOrder > 2 then
---                 EnhancedShopSorting.sortOrder = 1
---             end
---         elseif state == 3 then
---             EnhancedShopSorting.groupMethod = EnhancedShopSorting.groupMethod + 1
---             if EnhancedShopSorting.groupMethod > 2 then
---                 EnhancedShopSorting.groupMethod = 1
---             end
---         end
---         -- showOptionDialog(dialogCallback)
-        
---     end
-
---     -- if false then dialogCallback() end
-
---     showOptionDialog(dialogCallback)
-
--- end
 
 function EnhancedShopSorting:mainKeyEvent()
     Log:debug("EnhancedShopSorting.keyDummy")
@@ -343,7 +228,6 @@ function EnhancedShopSorting:mainKeyEvent()
 end
 
 function EnhancedShopSorting:registerHotkeys()
-    -- Log:debug("EnhancedShopSorting.registerHotkeys")
     local triggerUp, triggerDown, triggerAlways, startActive, callbackState, disableConflictingBindings = false, true, false, true, nil, true
     local success, actionEventId, otherEvents = g_inputBinding:registerActionEvent(InputAction.SORT_SHOP, self, self.mainKeyEvent, triggerUp, triggerDown, triggerAlways, startActive, callbackState, disableConflictingBindings)
 
@@ -352,63 +236,20 @@ function EnhancedShopSorting:registerHotkeys()
         g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_VERY_LOW)
     -- else
     --     Log:debug("Failed to register main key for EnhancedShopSorting")
-    --     Log:var("state", success)
-    --     Log:var("actionId", actionEventId)
     end    
     
 end
 
--- PlayerInputComponent.registerGlobalPlayerActionEvents = Utils.appendedFunction(PlayerInputComponent.registerGlobalPlayerActionEvents, function()
---     EnhancedShopSorting:mainKeyEvent()
--- end)
-
--- function EnhancedShopSorting:setDisplayItems(self, superFunc, items, ...)
-
---     return superFunc(self, items, ...)
--- end
-
 ShopItemsFrame.setDisplayItems = Utils.overwrittenFunction(ShopItemsFrame.setDisplayItems, function(self, superFunc, items, ...)
-    -- Log:debug("ShopItemsFrame.setDisplayItems")
-    -- Log:var("items", items)
     if items and #items > 0 then 
         EnhancedShopSorting:sortDisplayItems(items)
     end
-    -- EnhancedShopSorting:sortDisplayItems(items)
     return superFunc(self, items, ...)
 end)
 
--- ShopController.getItemsByCategory = Utils.overwrittenFunction(ShopController.getItemsByCategory, function(self, superFunc, ...)
---     return EnhancedShopSorting:getItemsByCategory(self, superFunc, ...)
--- end)
-
-
--- ShopMenu.onOpen = Utils.overwrittenFunction(ShopMenu.onOpen, function(self, superFunc, ...)
---     Log:debug("ShopMenu.onOpen")
---     return superFunc(self, ...)
--- end)
-
--- ShopMenu.onClose = Utils.overwrittenFunction(ShopMenu.onClose, function(self, superFunc, ...)
---     Log:debug("ShopMenu.onClose")
---     return superFunc(self, ...)
--- end)
-
--- -- ShopMenu.onClickMenu = Utils.overwrittenFunction
-
--- ShopMenu.exitMenu = Utils.overwrittenFunction(ShopMenu.exitMenu, function(self, superFunc, ...)
---     Log:debug("ShopMenu.exitMenu")
---     return superFunc(self, ...)
--- end)
-
--- ShopMenu.onClickItemCategory = Utils.overwrittenFunction(ShopMenu.onClickItemCategory, function(self, superFunc, ...)
---     Log:debug("ShopMenu.onClickItemCategory")
---     return superFunc(self, ...)
--- end)
-
 TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.onOpen, function(self, superFunc, ...)
-    -- Log:debug("TabbedMenuWithDetails.onOpen")
-    
     local returnValue superFunc(self, ...)
-    -- Log:var("g_shopMenu.isOpen", g_shopMenu.isOpen)
+
     if g_shopMenu.isOpen then
         EnhancedShopSorting:registerHotkeys()
     end
@@ -416,7 +257,3 @@ TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.o
     return returnValue
 end)
 
--- TabbedMenuWithDetails.onDetailOpened = Utils.overwrittenFunction(TabbedMenuWithDetails.onDetailOpened, function(self, superFunc, ...)
---     Log:debug("TabbedMenuWithDetails.onDetailOpened")
---     return superFunc(self, ...)
--- end)
