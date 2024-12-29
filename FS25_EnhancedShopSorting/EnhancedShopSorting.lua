@@ -1,7 +1,6 @@
 --[[
-SHORT DESCRIPTION OF WHAT YOUR MOD DOES GOES HERE
 
-Author:     YOUR NAME/NICKNAME
+Author:     w33zl
 Version:    1.0.0
 Modified:   2024-12-28
 
