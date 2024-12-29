@@ -4,12 +4,9 @@
     <texts>
         <text name="input_SORT_SHOP" text="Change Shop Sorting" />
         <text name="dialogTitle" text="Sort Options" />
-        <!-- <text name="choose_sortMethod" text="What do you want to sort equipment by?" /> -->
         <text name="choose_sortMethod" text="Sort by:" />
-        <!-- <text name="choose_sortOrder" text="In what order do you want to sort items?" /> -->
         <text name="choose_sortOrder" text="Sort order:" />
         <text name="choose_groupMethod" text="Group mod items at the end of the list?" />
-        <!-- <text name="choose_groupMethod" text="Do you want to group items?" /> -->
         <text name="enum_sortOrder_ascending" text="Ascending" />
         <text name="enum_sortOrder_descending" text="Descending" />
         <text name="enum_sortMethod_name" text="Name" />
