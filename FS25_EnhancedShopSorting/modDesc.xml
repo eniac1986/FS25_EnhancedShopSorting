@@ -1,10 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <modDesc descVersion="94" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/NMC-TBone/xml-schema/main/modDesc.xsd">
     <author>w33zl</author>
+    <version>1.0.0.0</version>
         <title>
-            <en>[PREVIEW] Enhanced Shop Sorting</en>
+            <en>Enhanced Shop Sorting</en>
             <de>Verbesserte Shop-Sortierung</de>
-            <fr>Amélioration du tri des magasins</fr>
+            <fr>Amélioration Du Tri Des Magasins</fr>
         </title>
     <description>
 <en><![CDATA[
