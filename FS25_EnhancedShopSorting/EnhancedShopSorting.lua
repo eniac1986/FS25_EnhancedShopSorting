@@ -32,6 +32,14 @@ GroupMethod.MODS = 2
 -- Enum(GroupMethod)
 
 function EnhancedShopSorting:sortDisplayItems(items)
+
+    
+    --TODO: respect the ShopSearch mod.
+    --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
+    --* >> g_shopMenu.currentPage.rootName
+
+
+
     Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d", self.sortOrder, self.sortMethod, self.groupMethod)
 
     if items == nil then
@@ -135,6 +143,8 @@ function EnhancedShopSorting:sortDisplayItems(items)
     
     
 end
+
+--│├ rootName: SEARCH
 
 function EnhancedShopSorting:updateDisplayItems()
     Log:debug("EnhancedShopSorting.updateDisplayItems")
