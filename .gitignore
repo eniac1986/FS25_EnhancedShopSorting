@@ -1,0 +1,5 @@
+deploy/output/*
+deploy/7za.exe
+deploy/releases/*
+
+.vscode/*
