@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<l10n>
+    <texts>
+        <text name="input_SORT_SHOP" text="Shop-Sortierung ändern" />
+        <text name="dialogTitle" text="Optionen sortieren" />
+        <text name="choose_sortMethod" text="Sortieren nach:" />
+        <text name="choose_sortOrder" text="Reihenfolge sortieren:" />
+        <text name="choose_groupMethod" text="Mod-Elemente am Ende der Liste gruppieren?" />
+        <text name="enum_sortOrder_ascending" text="Aufsteigend" />
+        <text name="enum_sortOrder_descending" text="Absteigend" />
+        <text name="enum_sortMethod_name" text="Name" />
+        <text name="enum_sortMethod_price" text="Preis" />
+        <text name="enum_sortMethod_power" text="Grundleistung (hp)" />
+        <text name="enum_sortMethod_speed" text="Maximale Geschwindigkeit" />
+        <text name="enum_sortMethod_weight" text="Gewicht" />
+        <text name="enum_groupMethod_none" text="Nein, Gruppierung deaktivieren" />
+        <text name="enum_groupMethod_mods" text="Ja, Gruppen-Mods dauern" />
+    </texts>
+</l10n>
