@@ -32,13 +32,12 @@ GroupMethod.MODS = 2
 -- Enum(GroupMethod)
 
 function EnhancedShopSorting:sortDisplayItems(items)
-
     
     --TODO: respect the ShopSearch mod.
     --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
     --* >> g_shopMenu.currentPage.rootName
 
-
+    --TODO: we should also respect the Sales tab
 
     Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d", self.sortOrder, self.sortMethod, self.groupMethod)
 
@@ -76,10 +75,6 @@ function EnhancedShopSorting:sortDisplayItems(items)
 
     local sortCallbacks = {}
 
-    Log:var("sortCallbacks", sortCallbacks)
-
-    
-
     local function getItems(item1, item2)
         return item1.storeItem or item1, item2.storeItem or item2
     end
@@ -93,11 +88,7 @@ function EnhancedShopSorting:sortDisplayItems(items)
     end
 
     local function defaultDelegate(item1, item2)
-        Log:debug("defaultDelegate: %s, %s | %d < %d", item1.name, item2.name, item1.price, item2.price)
-        -- local item1, item2 = getItems(item1, item2)
-        -- if item1.price == item2.price then
-        --     return item1.rawXMLFilename < item2.rawXMLFilename
-        -- end
+        -- Log:debug("defaultDelegate: %s, %s | %d < %d", item1.name, item2.name, item1.price, item2.price)
         return ensureUnique(item1, item2, item1.price, item2.price)
     end
 
@@ -136,8 +127,6 @@ function EnhancedShopSorting:sortDisplayItems(items)
         Log:table("sortCallbacks", sortCallbacks, 1)
     end
 
-    Log:var("sortMethod", self.sortMethod)
-
     if sortCallbacks == nil then
         Log:warning("No suitable sort methods found, skipping sort")
         return
@@ -148,7 +137,7 @@ function EnhancedShopSorting:sortDisplayItems(items)
     if sortDelegate ~= nil then
         -- Primary sort based on method
         if self.groupMethod == GroupMethod.MODS then
-            Log:debug("GroupMethod.MODS")
+            -- Log:debug("GroupMethod.MODS")
             table.sort(items, function(item1, item2)
                 local item1, item2 = getItems(item1, item2)
                 if item1.isMod == item2.isMod then
@@ -158,7 +147,7 @@ function EnhancedShopSorting:sortDisplayItems(items)
                 return not item1.isMod and item2.isMod
             end)
         else
-            Log:debug("GroupMethod.NONE")
+            -- Log:debug("GroupMethod.NONE")
             table.sort(items, sortDelegate)
         end
 
@@ -273,7 +262,7 @@ function EnhancedShopSorting:showDialog()
 end
 
 function EnhancedShopSorting:mainKeyEvent()
-    Log:debug("EnhancedShopSorting.keyDummy")
+    -- Log:debug("EnhancedShopSorting.keyDummy")
     if g_shopMenu.isOpen then
         self:showDialog()
     end
