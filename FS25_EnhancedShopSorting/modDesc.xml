@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no"?>
-<modDesc descVersion="94" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/NMC-TBone/xml-schema/main/modDesc.xsd">
+<modDesc descVersion="96" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/NMC-TBone/xml-schema/main/modDesc.xsd">
     <author>w33zl</author>
-    <version>1.0.0.0</version>
+    <version>1.0.0.0-dev</version>
         <title>
-            <en>Enhanced Shop Sorting</en>
+            <en>[DEV] Enhanced Shop Sorting</en>
             <de>Verbesserte Shop-Sortierung</de>
             <fr>Amélioration Du Tri Des Magasins</fr>
         </title>
@@ -46,12 +46,12 @@ De plus, il est possible d'activer ou de désactiver le comportement du jeu de b
 ]]></fr>
 </description>
     <iconFilename>icon_EnhancedShopSorting.dds</iconFilename>
-    <multiplayer supported="true" />
-    <l10n filenamePrefix="translation" />
+    <multiplayer supported="true"/>
+    <l10n filenamePrefix="translation"/>
     <extraSourceFiles>
-        <sourceFile filename="lib/LogHelper.lua" />
-        <sourceFile filename="lib/ModHelper.lua" />
-        <sourceFile filename="EnhancedShopSorting.lua" />
+        <sourceFile filename="lib/LogHelper.lua"/>
+        <sourceFile filename="lib/ModHelper.lua"/>
+        <sourceFile filename="EnhancedShopSorting.lua"/>
     </extraSourceFiles>
     <inputBinding>
 		<actionBinding action="SORT_SHOP">
@@ -59,6 +59,6 @@ De plus, il est possible d'activer ou de désactiver le comportement du jeu de b
 		</actionBinding>
     </inputBinding>
     <actions>
-        <action name="SORT_SHOP" />
+        <action name="SORT_SHOP"/>
 	</actions>        
 </modDesc>
