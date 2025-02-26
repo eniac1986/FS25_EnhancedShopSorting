@@ -76,13 +76,29 @@ function EnhancedShopSorting:sortDisplayItems(items)
 
     local sortCallbacks = {}
 
+    Log:var("sortCallbacks", sortCallbacks)
+
+    
+
     local function getItems(item1, item2)
         return item1.storeItem or item1, item2.storeItem or item2
     end
 
-    local function defaultDelegate(item1, item2)
+    local function ensureUnique(item1, item2, value1, value2)
         local item1, item2 = getItems(item1, item2)
-        return  item1.price <  item2.price
+        if value1 == value2 then
+            return item1.rawXMLFilename < item2.rawXMLFilename
+        end
+        return value1 < value2
+    end
+
+    local function defaultDelegate(item1, item2)
+        Log:debug("defaultDelegate: %s, %s | %d < %d", item1.name, item2.name, item1.price, item2.price)
+        -- local item1, item2 = getItems(item1, item2)
+        -- if item1.price == item2.price then
+        --     return item1.rawXMLFilename < item2.rawXMLFilename
+        -- end
+        return ensureUnique(item1, item2, item1.price, item2.price)
     end
 
     sortCallbacks[SortMethod.PRICE] = function(item1, item2)
@@ -92,47 +108,57 @@ function EnhancedShopSorting:sortDisplayItems(items)
 
     sortCallbacks[SortMethod.NAME] = function(item1, item2)
         local item1, item2 = getItems(item1, item2)
-        return applySortOptions(item1.name < item2.name)
+        return applySortOptions(ensureUnique(item1, item2, item1.name, item2.name))
     end
 
     sortCallbacks[SortMethod.SPEED] = function(item1, item2)
         local item1, item2 = getItems(item1, item2)
         local speed1 = safeGetValue(item1, "specs.maxSpeed")
         local speed2 = safeGetValue(item2, "specs.maxSpeed")
-        return applySortOptions(speed1 < speed2)
+        return applySortOptions(ensureUnique(item1, item2, speed1, speed2))
     end
 
     sortCallbacks[SortMethod.POWER] = function(item1, item2)
         local item1, item2 = getItems(item1, item2)
         local speed1 = safeGetValue(item1, "specs.power")
         local speed2 = safeGetValue(item2, "specs.power")
-        return applySortOptions(speed1 < speed2)
-    end    
+        return applySortOptions(ensureUnique(item1, item2, speed1, speed2))
+    end
 
     sortCallbacks[SortMethod.WEIGHT] = function(item1, item2)
         local item1, item2 = getItems(item1, item2)
         local weight1 = safeGetValue(item1, "specs.weight.componentMass") + safeGetValue(item1, "specs.weight.wheelMassDefaultConfig")
         local weight2 = safeGetValue(item2, "specs.weight.componentMass") + safeGetValue(item2, "specs.weight.wheelMassDefaultConfig")
-        return applySortOptions(weight1 < weight2)
+        return applySortOptions(ensureUnique(item1, item2, weight1, weight2))
     end
 
+    if sortCallbacks ~= nil then
+        Log:table("sortCallbacks", sortCallbacks, 1)
+    end
+
+    Log:var("sortMethod", self.sortMethod)
+
+    if sortCallbacks == nil then
+        Log:warning("No suitable sort methods found, skipping sort")
+        return
+    end
     -- table.sort(g_shopMenu.currentDisplayItems, sortItems_byName)
     local sortDelegate = sortCallbacks[self.sortMethod]
 
     if sortDelegate ~= nil then
         -- Primary sort based on method
         if self.groupMethod == GroupMethod.MODS then
-            -- Log:debug("GroupMethod.MODS")
+            Log:debug("GroupMethod.MODS")
             table.sort(items, function(item1, item2)
                 local item1, item2 = getItems(item1, item2)
                 if item1.isMod == item2.isMod then
                     return sortDelegate(item1, item2)
                 end
                 
-                return not item1.isMod and item2.isMod        
+                return not item1.isMod and item2.isMod
             end)
         else
-            -- Log:debug("GroupMethod.NONE")
+            Log:debug("GroupMethod.NONE")
             table.sort(items, sortDelegate)
         end
 
