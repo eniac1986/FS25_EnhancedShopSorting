@@ -10,8 +10,10 @@ assignees: ''
 **THE ISSUE**
 > Please provide a clear description of the issue:
 
+
 **HOW TO REPRODUCE THE ISSUE**
 > How can I reproduce the error?
+
 
 **IMPORTANT DETAILS:**
  - Game version: 
@@ -20,7 +22,5 @@ assignees: ''
  - Multiplayer: No or self-hosted multiplayer or dedicated server
 
 
-
-
-**SCREENSHOTS OR LOG**
-> If applicable, add screenshots to help explain your problem. Also consider providing the log.txt file, the more details I have the more likely I am to find the root cause.
+**SCREENSHOTS AND/OR LOG FILE**
+> If applicable, add screenshots to help explain your problem. Also consider providing the log.txt file. The more details I have the more likely I am to find the root cause.
