@@ -1,38 +1,26 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Please provide as much details as possible
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**THE ISSUE**
+> Please provide a clear description of the issue:
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**HOW TO REPRODUCE THE ISSUE**
+> How can I reproduce the error?
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**IMPORTANT DETAILS:**
+ - Game version: 
+ - Mod version: 
+ - Giants or Steam version: 
+ - Multiplayer: No or self-hosted multiplayer or dedicated server
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
 
-**Additional context**
-Add any other context about the problem here.
+**SCREENSHOTS OR LOG**
+> If applicable, add screenshots to help explain your problem. Also consider providing the log.txt file, the more details I have the more likely I am to find the root cause.
