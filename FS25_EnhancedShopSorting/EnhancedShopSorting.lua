@@ -31,6 +31,8 @@ GroupMethod.NONE = 1
 GroupMethod.MODS = 2
 -- Enum(GroupMethod)
 
+EnhancedShopSorting:source("lib/UIHelper.lua")
+
 function EnhancedShopSorting:sortDisplayItems(items)
     --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
     --* >> g_shopMenu.currentPage.rootName
@@ -338,3 +340,44 @@ TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.o
     return returnValue
 end)
 
+ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPanel, function(self, superFunc, ...)
+    local returnValue = superFunc(self, ...)
+
+    -- self.garageMenuButtonInfo
+
+    Log:debug("ShopMenu.updateButtonsPanel")
+    local vehiclePage = g_shopMenu.pageShopVehicles
+    local isVehicles = g_shopMenu.currentPage == vehiclePage
+    Log:var("g_shopMenu.currentPage", g_shopMenu.currentPage)
+    Log:var("g_shopMenu.currentPage.rootName", g_shopMenu.currentPage.rootName)
+    Log:var("isVehicles", isVehicles)
+
+    -- local cb = g_shopMenu:makeSelfCallback(EnhancedShopSorting.xxx)
+
+    -- g_shopMenu.defaultMenuButtonInfoByActions[InputAction.SORT_SHOP] = {
+    --     action = InputAction.SORT_SHOP,
+    --     text = "Sort",
+    --     callback = EnhancedShopSorting.xxx,
+    --     visible = true,
+    -- }
+
+    local firstButton = g_shopMenu.buttonsPanel.elements[1]
+    vehiclePage.sortOrderButton = vehiclePage.sortOrderButton or UIHelper.cloneButton(
+        firstButton, 
+        "changeSortOrderButton", 
+        "Sort", 
+        InputAction.SORT_SHOP, 
+        EnhancedShopSorting.mainKeyEvent,
+        EnhancedShopSorting
+    )
+    
+    --     vehiclePage.sortOrderButton.onClick = function()
+    --     EnhancedShopSorting:showDialog()
+    -- end
+
+
+
+    -- g_shopMenu:invalidateLayout()
+
+    return returnValue
+end)
