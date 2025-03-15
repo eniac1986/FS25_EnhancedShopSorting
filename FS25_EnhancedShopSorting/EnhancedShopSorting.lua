@@ -32,14 +32,33 @@ GroupMethod.MODS = 2
 -- Enum(GroupMethod)
 
 function EnhancedShopSorting:sortDisplayItems(items)
-    
-    --TODO: respect the ShopSearch mod.
     --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
     --* >> g_shopMenu.currentPage.rootName
 
-    --TODO: we should also respect the Sales tab
+    -- local isDetailsPage = g_shopMenu.currentPage == self.pageShopItemDetails
+    local menuName = (g_shopMenu.currentPage ~= nil and g_shopMenu.currentPage.rootName) or ""
+    -- local enableSort = menuName ~= nil and menuName ~= "SEARCH" and menuName ~= "SALES"
+    local isVehiclesPage = g_shopMenu.currentPage == g_shopMenu.pageShopVehicles
 
-    Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d", self.sortOrder, self.sortMethod, self.groupMethod)
+    Log:var("g_shopMenu.currentCategoryName", g_shopMenu.currentCategoryName)
+    Log:var("g_shopMenu.currentItemDetailsType", g_shopMenu.currentItemDetailsType)
+    -- Log:var("isDetailsPage", isDetailsPage)
+    Log:var("menuName", menuName)
+    Log:var("isVehiclesPage", isVehiclesPage)
+
+    -- if g_shopMenu.currentPage == nil then
+    --     Log:debug("EnhancedShopSorting.sortDisplayItems> g_shopMenu.currentPage is nil")
+    -- else
+    --     Log:debug("g_shopMenu.currentPage > rootName: %s, ", menuName)
+    -- end
+
+    if not isVehiclesPage then
+        Log:debug("EnhancedShopSorting.sortDisplayItems> Skipping sort for menu: %s", menuName)
+        return
+    end
+    
+
+    Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d, MenuName: %s, category: %s", self.sortOrder, self.sortMethod, self.groupMethod, menuName, g_shopMenu.currentCategoryName)
 
     if items == nil then
         Log:debug("WARN: No items to sort")
@@ -281,7 +300,28 @@ function EnhancedShopSorting:registerHotkeys()
     
 end
 
+
+-- function ShopMenu.exitMenu(self)
+-- 	self.pageShopItemDetails:setDisplayItems(nil)
+-- 	self.pageShopItemCombinations:setDisplayItems(nil)
+-- 	self.pageUsedSale:setDisplayItems(nil)
+-- 	self.selectedDisplayElement = nil
+-- 	self.currentDisplayItems = nil
+-- 	ShopMenu:superClass().exitMenu(self)
+-- end
+-- ShopMenu.onVehicleSaleChanged = Utils.overwrittenFunction(ShopMenu.onVehicleSaleChanged, function(self, superFunc)
+--     Log:debug("ShopMenu.onVehicleSaleChanged")
+--     return superFunc(self)
+-- end)
+
+-- ShopMenu.setupMenuButtonInfo = Utils.overwrittenFunction(ShopMenu.setupMenuButtonInfo, function(self, superFunc)
+--     Log:debug("ShopMenu.setupMenuButtonInfo")
+--     return superFunc(self)
+-- end)
+
+
 ShopItemsFrame.setDisplayItems = Utils.overwrittenFunction(ShopItemsFrame.setDisplayItems, function(self, superFunc, items, ...)
+    Log:debug("ShopItemsFrame.setDisplayItems")
     if items and #items > 0 then 
         EnhancedShopSorting:sortDisplayItems(items)
     end
