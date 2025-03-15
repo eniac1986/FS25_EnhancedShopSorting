@@ -289,7 +289,7 @@ ShopItemsFrame.setDisplayItems = Utils.overwrittenFunction(ShopItemsFrame.setDis
 end)
 
 TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.onOpen, function(self, superFunc, ...)
-    local returnValue superFunc(self, ...)
+    local returnValue = superFunc(self, ...)
 
     if g_shopMenu.isOpen then
         EnhancedShopSorting:registerHotkeys()
