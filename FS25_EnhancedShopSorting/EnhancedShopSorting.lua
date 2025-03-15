@@ -37,28 +37,15 @@ function EnhancedShopSorting:sortDisplayItems(items)
     --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
     --* >> g_shopMenu.currentPage.rootName
 
-    -- local isDetailsPage = g_shopMenu.currentPage == self.pageShopItemDetails
     local menuName = (g_shopMenu.currentPage ~= nil and g_shopMenu.currentPage.rootName) or ""
     -- local enableSort = menuName ~= nil and menuName ~= "SEARCH" and menuName ~= "SALES"
-    local isVehiclesPage = g_shopMenu.currentPage == g_shopMenu.pageShopVehicles
-
-    Log:var("g_shopMenu.currentCategoryName", g_shopMenu.currentCategoryName)
-    Log:var("g_shopMenu.currentItemDetailsType", g_shopMenu.currentItemDetailsType)
-    -- Log:var("isDetailsPage", isDetailsPage)
-    Log:var("menuName", menuName)
-    Log:var("isVehiclesPage", isVehiclesPage)
-
-    -- if g_shopMenu.currentPage == nil then
-    --     Log:debug("EnhancedShopSorting.sortDisplayItems> g_shopMenu.currentPage is nil")
-    -- else
-    --     Log:debug("g_shopMenu.currentPage > rootName: %s, ", menuName)
-    -- end
+    local vehiclesPage = g_shopMenu.pageShopVehicles
+    local isVehiclesPage = g_shopMenu.currentPage == vehiclesPage
 
     if not isVehiclesPage then
         Log:debug("EnhancedShopSorting.sortDisplayItems> Skipping sort for menu: %s", menuName)
         return
     end
-    
 
     Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d, MenuName: %s, category: %s", self.sortOrder, self.sortMethod, self.groupMethod, menuName, g_shopMenu.currentCategoryName)
 
@@ -303,25 +290,6 @@ function EnhancedShopSorting:registerHotkeys()
 end
 
 
--- function ShopMenu.exitMenu(self)
--- 	self.pageShopItemDetails:setDisplayItems(nil)
--- 	self.pageShopItemCombinations:setDisplayItems(nil)
--- 	self.pageUsedSale:setDisplayItems(nil)
--- 	self.selectedDisplayElement = nil
--- 	self.currentDisplayItems = nil
--- 	ShopMenu:superClass().exitMenu(self)
--- end
--- ShopMenu.onVehicleSaleChanged = Utils.overwrittenFunction(ShopMenu.onVehicleSaleChanged, function(self, superFunc)
---     Log:debug("ShopMenu.onVehicleSaleChanged")
---     return superFunc(self)
--- end)
-
--- ShopMenu.setupMenuButtonInfo = Utils.overwrittenFunction(ShopMenu.setupMenuButtonInfo, function(self, superFunc)
---     Log:debug("ShopMenu.setupMenuButtonInfo")
---     return superFunc(self)
--- end)
-
-
 ShopItemsFrame.setDisplayItems = Utils.overwrittenFunction(ShopItemsFrame.setDisplayItems, function(self, superFunc, items, ...)
     Log:debug("ShopItemsFrame.setDisplayItems")
     if items and #items > 0 then 
@@ -340,6 +308,7 @@ TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.o
     return returnValue
 end)
 
+
 ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPanel, function(self, superFunc, ...)
     local returnValue = superFunc(self, ...)
 
@@ -352,15 +321,6 @@ ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPa
     Log:var("g_shopMenu.currentPage.rootName", g_shopMenu.currentPage.rootName)
     Log:var("isVehicles", isVehicles)
 
-    -- local cb = g_shopMenu:makeSelfCallback(EnhancedShopSorting.xxx)
-
-    -- g_shopMenu.defaultMenuButtonInfoByActions[InputAction.SORT_SHOP] = {
-    --     action = InputAction.SORT_SHOP,
-    --     text = "Sort",
-    --     callback = EnhancedShopSorting.xxx,
-    --     visible = true,
-    -- }
-
     local firstButton = g_shopMenu.buttonsPanel.elements[1]
     vehiclePage.sortOrderButton = vehiclePage.sortOrderButton or UIHelper.cloneButton(
         firstButton, 
@@ -370,14 +330,6 @@ ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPa
         EnhancedShopSorting.mainKeyEvent,
         EnhancedShopSorting
     )
-    
-    --     vehiclePage.sortOrderButton.onClick = function()
-    --     EnhancedShopSorting:showDialog()
-    -- end
-
-
-
-    -- g_shopMenu:invalidateLayout()
 
     return returnValue
 end)
