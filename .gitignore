@@ -3,3 +3,12 @@ deploy/7za.exe
 deploy/releases/*
 
 .vscode/*
+deploy/*
+WiKi/*
+graphics/*
+.env.local
+**/.build/*
+modDesc.build
+modDesc.xml.bak
+.env
+TODO.md
