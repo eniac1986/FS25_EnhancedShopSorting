@@ -19,8 +19,17 @@ Extends the vehicle shop with sorting options. The sorting options are (ascendin
 To change the shop sorting options, all you need to do is press the "O" key (can be configured) when you have the shop menu open. 
 
 In addition, the base game behaviour of grouping mod equipment separately at the end can be toggled on or off (in off mode, mod equipment are blended with the base game equipment according to the sort method). 
+
+CHANGELOG:
+
+v1.1.0:
+- FIX: Sale items is no longer sorted/changed by the mod [#1]
+- FIX: Fix typo in Lua code [#2]
+- FIX: Fixed compatabillity with Shop Search and Garage Menu mods [#3]
+- FIX: Disabled sorting on some vehicle shop pages
+- NEW: Added UI button to sort
 ]]></en>
-    <de><![CDATA[
+<de><![CDATA[
 Erweitert den Fahrzeugshop um Sortieroptionen. Die Sortiermöglichkeiten sind (aufsteigend oder absteigend):
 - Name
 - Preis
