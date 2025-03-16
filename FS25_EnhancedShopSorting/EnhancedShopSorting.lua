@@ -1,8 +1,8 @@
 --[[
 
 Author:     w33zl
-Version:    1.0.0
-Modified:   2024-12-28
+Version:    1.1.0
+Modified:   2025-03-15
 
 Changelog:
 
@@ -33,21 +33,33 @@ GroupMethod.MODS = 2
 
 EnhancedShopSorting:source("lib/UIHelper.lua")
 
+function EnhancedShopSorting:verifySortEnabled()
+    local cp = g_shopMenu.currentPage
+    local vehiclePage = g_shopMenu.pageShopVehicles
+    local isVehicles = cp == vehiclePage
+    local allowSort = isVehicles or cp == g_shopMenu.pageShopItemDetails
+    allowSort = allowSort and (g_shopMenu.currentPage.rootName ~= "SEARCH")
+
+    return allowSort
+end
+
 function EnhancedShopSorting:sortDisplayItems(items)
     --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
     --* >> g_shopMenu.currentPage.rootName
 
     local menuName = (g_shopMenu.currentPage ~= nil and g_shopMenu.currentPage.rootName) or ""
     -- local enableSort = menuName ~= nil and menuName ~= "SEARCH" and menuName ~= "SALES"
-    local vehiclesPage = g_shopMenu.pageShopVehicles
-    local isVehiclesPage = g_shopMenu.currentPage == vehiclesPage
+    -- local vehiclesPage = g_shopMenu.pageShopVehicles
+    -- local isVehiclesPage = g_shopMenu.currentPage == vehiclesPage
+    local allowSort = self:verifySortEnabled()
 
-    if not isVehiclesPage then
-        Log:debug("EnhancedShopSorting.sortDisplayItems> Skipping sort for menu: %s", menuName)
+    Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d, MenuName: %s, category: %s", self.sortOrder, self.sortMethod, self.groupMethod, menuName, g_shopMenu.currentCategoryName)
+
+    if not allowSort then
+        Log:debug("Skipping sort for menu: %s [%s]", menuName, g_shopMenu.currentCategoryName)
         return
     end
 
-    Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d, MenuName: %s, category: %s", self.sortOrder, self.sortMethod, self.groupMethod, menuName, g_shopMenu.currentCategoryName)
 
     if items == nil then
         Log:debug("WARN: No items to sort")
@@ -271,7 +283,9 @@ end
 
 function EnhancedShopSorting:mainKeyEvent()
     -- Log:debug("EnhancedShopSorting.keyDummy")
-    if g_shopMenu.isOpen then
+    -- Log:var("g_shopMenu.pageShopVehicles.sortOrderButton.visible", g_shopMenu.pageShopVehicles.sortOrderButton:getIsVisible())
+    if g_shopMenu.isOpen and g_shopMenu.pageShopVehicles.sortOrderButton:getIsVisible() then
+        
         self:showDialog()
     end
 end
@@ -308,28 +322,31 @@ TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.o
     return returnValue
 end)
 
-
 ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPanel, function(self, superFunc, ...)
     local returnValue = superFunc(self, ...)
-
-    -- self.garageMenuButtonInfo
-
-    Log:debug("ShopMenu.updateButtonsPanel")
+    -- local cp = g_shopMenu.currentPage
     local vehiclePage = g_shopMenu.pageShopVehicles
-    local isVehicles = g_shopMenu.currentPage == vehiclePage
-    Log:var("g_shopMenu.currentPage", g_shopMenu.currentPage)
-    Log:var("g_shopMenu.currentPage.rootName", g_shopMenu.currentPage.rootName)
-    Log:var("isVehicles", isVehicles)
+    -- local isVehicles = cp == vehiclePage
+    -- local showSort = isVehicles or cp == g_shopMenu.pageShopItemDetails
+    -- showSort = showSort and (g_shopMenu.currentPage.rootName ~= "SEARCH")
+    local showSort = EnhancedShopSorting:verifySortEnabled()
 
-    local firstButton = g_shopMenu.buttonsPanel.elements[1]
-    vehiclePage.sortOrderButton = vehiclePage.sortOrderButton or UIHelper.cloneButton(
-        firstButton, 
-        "changeSortOrderButton", 
-        "Sort", 
-        InputAction.SORT_SHOP, 
-        EnhancedShopSorting.mainKeyEvent,
-        EnhancedShopSorting
-    )
+    local function createButton()
+        local firstButton = g_shopMenu.buttonsPanel.elements[1]
+        return UIHelper.cloneButton(
+            firstButton, 
+            "changeSortOrderButton", 
+            g_i18n:getText("button_sortStore"),
+            InputAction.SORT_SHOP, 
+            EnhancedShopSorting.mainKeyEvent,
+            EnhancedShopSorting
+        )
+    end
+
+    vehiclePage.sortOrderButton = vehiclePage.sortOrderButton or createButton()
+    
+    vehiclePage.sortOrderButton:setVisible(showSort)
+    g_shopMenu.buttonsPanel:invalidateLayout()
 
     return returnValue
 end)
