@@ -37,9 +37,18 @@ Erweitert den Fahrzeugshop um Sortieroptionen. Die Sortiermöglichkeiten sind (a
 - Maximale Geschwindigkeit
 - Gewicht
 
-Um die Sortieroptionen des Shops zu ändern, müssen Sie nur die Taste "O" drücken (kann konfiguriert werden), wenn Sie das Shop-Menü geöffnet haben.
+Um die Sortieroptionen des Shops zu ändern, brauchen Sie nur die Taste "O" zu drücken (kann konfiguriert werden), wenn Sie das Shop-Menü geöffnet haben.
 
 Außerdem kann das Verhalten des Basisspiels, Mod-Ausrüstungen am Ende separat zu gruppieren, ein- oder ausgeschaltet werden (im ausgeschalteten Modus werden Mod-Ausrüstungen entsprechend der Sortiermethode mit den Basisspiel-Ausrüstungen vermischt).
+
+CHANGELOG:
+
+v1.1.0:
+- FIX: Verkaufsgegenstände werden nicht mehr von der Mod sortiert/verändert [#1]
+- FIX: Tippfehler im Lua-Code behoben [#2]
+- FIX: Kompatibilität mit den Mods Shop Search und Garage Menu behoben [#3]
+- FIX: Sortierung auf einigen Fahrzeug-Shop-Seiten abgeschaltet
+- NEW: UI-Schaltfläche zum Sortieren hinzugefügt
 ]]></de>
 <fr><![CDATA[
 Permet d'ajouter des options de tri à la boutique de véhicules. Les options de tri sont les suivantes (ordre croissant ou décroissant) :
@@ -51,7 +60,16 @@ Permet d'ajouter des options de tri à la boutique de véhicules. Les options de
 
 Pour modifier les options de tri de la boutique, il suffit d'appuyer sur la touche "O" (configurable) lorsque le menu de la boutique est ouvert.
 
-De plus, il est possible d'activer ou de désactiver le comportement du jeu de base qui consiste à regrouper les équipements mods séparément à la fin (en mode désactivé, les équipements mods sont mélangés aux équipements du jeu de base en fonction de la méthode de tri).
+De plus, il est possible d'activer ou de désactiver le comportement du jeu de base qui consiste à regrouper les équipements mods séparément à la fin (en mode désactivé, les équipements mods sont mélangés aux équipements du jeu de base selon la méthode de tri).
+
+CHANGELOG :
+
+v1.1.0 :
+- FIXE : Les objets en vente ne sont plus triés/modifiés par le mod [#1].
+- FIX : Correction d'une coquille dans le code Lua [#2]
+- FIX : Correction de la compatibilité avec les mods Shop Search et Garage Menu [#3]
+- FIXE : Désactivation du tri sur certaines pages de boutiques de véhicules
+- NOUVEAU : Ajout d'un bouton d'interface utilisateur pour trier
 ]]></fr>
 </description>
     <iconFilename>icon_EnhancedShopSorting.dds</iconFilename>

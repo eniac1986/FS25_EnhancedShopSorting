@@ -15,5 +15,6 @@
         <text name="enum_groupMethod_none" text="Non, désactiver le regroupement"/>
         <text name="enum_groupMethod_mods" text="Oui, les mods de groupe durent"/>
         <text name="input_SORT_SHOP" text="Modifier le tri des magasins"/>
-    </texts>
+    		<text name="button_sortStore" text="Trier"/>
+</texts>
 </l10n>
