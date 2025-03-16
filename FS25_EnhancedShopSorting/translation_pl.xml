@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<l10n>
+    <translationContributors>Ziuta</translationContributors>
+    <texts>
+        <text name="input_SORT_SHOP" text="Zmień sortowanie sklepu" />
+        <text name="dialogTitle" text="Opcje sortowania" />
+        <text name="choose_sortMethod" text="Sortuj według:" />
+        <text name="choose_sortOrder" text="Kolejność sortowania:" />
+        <text name="choose_groupMethod" text="Zgrupować mody na końcu listy?" />
+        <text name="enum_sortOrder_ascending" text="Rosnąco" />
+        <text name="enum_sortOrder_descending" text="Malejąco" />
+        <text name="enum_sortMethod_name" text="Nazwa" />
+        <text name="enum_sortMethod_price" text="Cena" />
+        <text name="enum_sortMethod_power" text="Moc podstawowa (KM)" />
+        <text name="enum_sortMethod_speed" text="Max prędkość" />
+        <text name="enum_sortMethod_weight" text="Waga" />
+        <text name="enum_groupMethod_none" text="Nie, wyłącz grupowanie" />
+        <text name="enum_groupMethod_mods" text="Tak, zgrupowane mody jako ostatnie" />
+    </texts>
+</l10n>
