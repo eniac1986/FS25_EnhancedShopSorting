@@ -3,17 +3,16 @@ UIHelper = {}
 
 function UIHelper.cloneButton(original, name, text, inputAction, callback, target)
     local button = original:clone(original.parent)
-    
+    button.name = name
     button:setText(text)
     button:setVisible(true)
     button.target = target or button.target
     -- button:setCallback("onClickCallback", callback)
     button.onClickCallback = callback
-    if inputAction then
+    if inputAction ~= nil then
         button:setInputAction(inputAction)
     end
     -- button:setInputAction(InputAction.FIND_USED_EQUIPMENT)
-    button.name = name
     button.parent:invalidateLayout()
     -- Log:var("title", title)
     return button
