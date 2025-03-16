@@ -48,12 +48,9 @@ function EnhancedShopSorting:sortDisplayItems(items)
     --* >> g_shopMenu.currentPage.rootName
 
     local menuName = (g_shopMenu.currentPage ~= nil and g_shopMenu.currentPage.rootName) or ""
-    -- local enableSort = menuName ~= nil and menuName ~= "SEARCH" and menuName ~= "SALES"
-    -- local vehiclesPage = g_shopMenu.pageShopVehicles
-    -- local isVehiclesPage = g_shopMenu.currentPage == vehiclesPage
     local allowSort = self:verifySortEnabled()
 
-    Log:debug("EnhancedShopSorting.sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d, MenuName: %s, category: %s", self.sortOrder, self.sortMethod, self.groupMethod, menuName, g_shopMenu.currentCategoryName)
+    Log:debug("sortDisplayItems> SortOrder: %d, SortMethod: %d, GroupMethod: %d, MenuName: %s, category: %s", self.sortOrder, self.sortMethod, self.groupMethod, menuName, g_shopMenu.currentCategoryName)
 
     if not allowSort then
         Log:debug("Skipping sort for menu: %s [%s]", menuName, g_shopMenu.currentCategoryName)
@@ -324,11 +321,7 @@ end)
 
 ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPanel, function(self, superFunc, ...)
     local returnValue = superFunc(self, ...)
-    -- local cp = g_shopMenu.currentPage
     local vehiclePage = g_shopMenu.pageShopVehicles
-    -- local isVehicles = cp == vehiclePage
-    -- local showSort = isVehicles or cp == g_shopMenu.pageShopItemDetails
-    -- showSort = showSort and (g_shopMenu.currentPage.rootName ~= "SEARCH")
     local showSort = EnhancedShopSorting:verifySortEnabled()
 
     local function createButton()
@@ -344,7 +337,7 @@ ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPa
     end
 
     vehiclePage.sortOrderButton = vehiclePage.sortOrderButton or createButton()
-    
+
     vehiclePage.sortOrderButton:setVisible(showSort)
     g_shopMenu.buttonsPanel:invalidateLayout()
 
