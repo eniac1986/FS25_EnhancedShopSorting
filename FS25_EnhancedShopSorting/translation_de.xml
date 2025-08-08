@@ -13,6 +13,7 @@
         <text name="enum_sortMethod_power" text="Grundleistung (hp)"/>
         <text name="enum_sortMethod_speed" text="Maximale Geschwindigkeit"/>
         <text name="enum_sortMethod_weight" text="Gewicht"/>
+        <text name="enum_sortMethod_workingwidth" text="Arbeitsbreite" />
         <text name="enum_groupMethod_none" text="Nein, Gruppierung deaktivieren"/>
         <text name="enum_groupMethod_mods" text="Ja, Gruppen-Mods dauern"/>
     		<text name="button_sortStore" text="Sortieren"/>
