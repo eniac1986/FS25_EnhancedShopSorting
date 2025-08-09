@@ -104,19 +104,19 @@ function EnhancedShopSorting:sortDisplayItems(items)
             if workingWidthConfig then
                 -- Variable working width
                 for _, workingWidthTable in pairs(workingWidthConfig) do
-                    Log:warning("WW table: %s", workingWidthTable)
+                    --Log:warning("WW table: %s", workingWidthTable)
                     for _, workWidthEntry in ipairs(workingWidthTable) do
                         table.insert(workWidths, workWidthEntry.width)
                     end
                 end
             else
-                Log:warning("No WW for %s", item.name)
+                --Log:warning("No WW for %s", item.name)
                 return 0;
             end
         end
 
         local maxWidth = math.max(table.unpack(workWidths))
-        Log:warning("%s has working width %d", item.name, maxWidth)
+        --Log:warning("%s has working width %d", item.name, maxWidth)
         return maxWidth;
     end
 
