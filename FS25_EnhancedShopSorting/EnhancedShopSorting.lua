@@ -22,7 +22,7 @@ SortMethod.SPEED = 3
 SortMethod.POWER = 4
 SortMethod.WEIGHT = 5
 -- SortMethod.CAPACITY = 6
--- SortMethod.WORKINGWIDTH = 7
+SortMethod.WORKINGWIDTH = 6
 -- SortMethod.WORKINGSPEED = 8
 -- Enum(SortMethod)
 
@@ -44,7 +44,7 @@ function EnhancedShopSorting:verifySortEnabled()
 end
 
 function EnhancedShopSorting:sortDisplayItems(items)
-    --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search) 
+    --NOTE: can we simply check if this is nil (category view, no need to sort) or is SEARCH (i.e. shop search)
     --* >> g_shopMenu.currentPage.rootName
 
     local menuName = (g_shopMenu.currentPage ~= nil and g_shopMenu.currentPage.rootName) or ""
@@ -61,8 +61,8 @@ function EnhancedShopSorting:sortDisplayItems(items)
     if items == nil then
         Log:debug("WARN: No items to sort")
         return
-    end    
-    
+    end
+
     local SORT_ORDER_ASC = (self.sortOrder == SortOrder.ASCENDING)
 
     local function applySortOptions(sortValue)
@@ -77,17 +77,47 @@ function EnhancedShopSorting:sortDisplayItems(items)
         default = default or 0
 
         local values = string.split(namedValues, ".")
-    
+
         for i = 1, #values do
             local k = values[i]
             t = t[k]
-    
+
             if t == nil then
                 return default
             end
         end
-    
+
         return t or default
+    end
+
+    local function getWorkWidthMax(item)
+
+        local workWidths = {}
+        local workWidth = safeGetValue(item, "specs.workingWidth") -- may be nil
+
+        if workWidth and workWidth~=0 then
+            -- Fixed working width
+            table.insert(workWidths, workWidth)
+        else
+            -- Either no working width or a variable one
+            local workingWidthConfig = safeGetValue(item, "specs.workingWidthConfig")
+            if workingWidthConfig then
+                -- Variable working width
+                for _, workingWidthTable in pairs(workingWidthConfig) do
+                    Log:warning("WW table: %s", workingWidthTable)
+                    for _, workWidthEntry in ipairs(workingWidthTable) do
+                        table.insert(workWidths, workWidthEntry.width)
+                    end
+                end
+            else
+                Log:warning("No WW for %s", item.name)
+                return 0;
+            end
+        end
+
+        local maxWidth = math.max(table.unpack(workWidths))
+        Log:warning("%s has working width %d", item.name, maxWidth)
+        return maxWidth;
     end
 
     local sortCallbacks = {}
@@ -140,6 +170,13 @@ function EnhancedShopSorting:sortDisplayItems(items)
         return applySortOptions(ensureUnique(item1, item2, weight1, weight2))
     end
 
+    sortCallbacks[SortMethod.WORKINGWIDTH] = function(item1, item2)
+        local item1, item2 = getItems(item1, item2)
+        local workingwidth1 = getWorkWidthMax(item1)
+        local workingwidth2 = getWorkWidthMax(item2)
+        return applySortOptions(ensureUnique(item1, item2, workingwidth1, workingwidth2))
+    end
+
     if sortCallbacks ~= nil then
         Log:table("sortCallbacks", sortCallbacks, 1)
     end
@@ -160,7 +197,7 @@ function EnhancedShopSorting:sortDisplayItems(items)
                 if item1.isMod == item2.isMod then
                     return sortDelegate(item1, item2)
                 end
-                
+
                 return not item1.isMod and item2.isMod
             end)
         else
@@ -172,8 +209,8 @@ function EnhancedShopSorting:sortDisplayItems(items)
         Log:warning("Sort method not implemented: %s [%d]", SortMethod.getName(self.sortMethod), self.sortMethod)
     end
     -- g_shopMenu.pageShopItemDetails:setDisplayItems(g_shopMenu.currentDisplayItems)
-    
-    
+
+
 end
 
 --│├ rootName: SEARCH
@@ -202,9 +239,9 @@ function EnhancedShopSorting:getItemsByCategory(shopController, superFunc, ...)
     local function sortItems_byPrice(item1, item2)
         local item1 = item1.storeItem or item1
         local item2 = item2.storeItem or item2
-        
+
         return item1.price <  item2.price
-        
+
     end
 
     table.sort(items, sortItems_byPrice)
@@ -231,7 +268,7 @@ function EnhancedShopSorting:showDialog()
             options[i] = g_i18n:getText(translationKey)
         end
         return options
-        
+
     end
 
     local function showOption(text, currentState, enum, callback)
@@ -246,7 +283,7 @@ function EnhancedShopSorting:showDialog()
 
     showOption(g_i18n:getText("choose_sortMethod"), self.sortMethod, SortMethod, function(chosenMethod)
         Log:debug("callbackFunc state: %s", chosenMethod)
-        
+
         if chosenMethod == 0 then
             return
         end
@@ -263,7 +300,7 @@ function EnhancedShopSorting:showDialog()
             end
 
             self.sortOrder = chosenOrder
-    
+
             showOption(g_i18n:getText("choose_groupMethod"), self.groupMethod, GroupMethod, function(chosenGrouping)
                 Log:debug("callbackFunc state: %s", chosenGrouping)
 
@@ -282,7 +319,7 @@ function EnhancedShopSorting:mainKeyEvent()
     -- Log:debug("EnhancedShopSorting.keyDummy")
     -- Log:var("g_shopMenu.pageShopVehicles.sortOrderButton.visible", g_shopMenu.pageShopVehicles.sortOrderButton:getIsVisible())
     if g_shopMenu.isOpen and g_shopMenu.pageShopVehicles.sortOrderButton:getIsVisible() then
-        
+
         self:showDialog()
     end
 end
@@ -296,14 +333,14 @@ function EnhancedShopSorting:registerHotkeys()
         g_inputBinding:setActionEventTextPriority(actionEventId, GS_PRIO_VERY_LOW)
     -- else
     --     Log:debug("Failed to register main key for EnhancedShopSorting")
-    end    
-    
+    end
+
 end
 
 
 ShopItemsFrame.setDisplayItems = Utils.overwrittenFunction(ShopItemsFrame.setDisplayItems, function(self, superFunc, items, ...)
     Log:debug("ShopItemsFrame.setDisplayItems")
-    if items and #items > 0 then 
+    if items and #items > 0 then
         EnhancedShopSorting:sortDisplayItems(items)
     end
     return superFunc(self, items, ...)
@@ -315,7 +352,7 @@ TabbedMenuWithDetails.onOpen = Utils.overwrittenFunction(TabbedMenuWithDetails.o
     if g_shopMenu.isOpen then
         EnhancedShopSorting:registerHotkeys()
     end
-    
+
     return returnValue
 end)
 
@@ -327,10 +364,10 @@ ShopMenu.updateButtonsPanel = Utils.overwrittenFunction(ShopMenu.updateButtonsPa
     local function createButton()
         local firstButton = g_shopMenu.buttonsPanel.elements[1]
         return UIHelper.cloneButton(
-            firstButton, 
-            "changeSortOrderButton", 
+            firstButton,
+            "changeSortOrderButton",
             g_i18n:getText("button_sortStore"),
-            InputAction.SORT_SHOP, 
+            InputAction.SORT_SHOP,
             EnhancedShopSorting.mainKeyEvent,
             EnhancedShopSorting
         )
