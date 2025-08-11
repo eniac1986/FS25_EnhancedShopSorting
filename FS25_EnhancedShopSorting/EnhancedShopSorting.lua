@@ -95,28 +95,25 @@ function EnhancedShopSorting:sortDisplayItems(items)
         local workWidths = {}
         local workWidth = safeGetValue(item, "specs.workingWidth") -- may be nil
 
-        if workWidth and workWidth~=0 then
+        if workWidth and workWidth ~= 0 then
             -- Fixed working width
             table.insert(workWidths, workWidth)
         else
             -- Either no working width or a variable one
             local workingWidthConfig = safeGetValue(item, "specs.workingWidthConfig")
-            if workingWidthConfig then
+            if workingWidthConfig and workingWidthConfig ~= 0 then
                 -- Variable working width
                 for _, workingWidthTable in pairs(workingWidthConfig) do
-                    Log:warning("WW table: %s", workingWidthTable)
                     for _, workWidthEntry in ipairs(workingWidthTable) do
                         table.insert(workWidths, workWidthEntry.width)
                     end
                 end
             else
-                Log:warning("No WW for %s", item.name)
                 return 0;
             end
         end
 
         local maxWidth = math.max(table.unpack(workWidths))
-        Log:warning("%s has working width %d", item.name, maxWidth)
         return maxWidth;
     end
 
