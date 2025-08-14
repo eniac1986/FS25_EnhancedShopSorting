@@ -14,6 +14,7 @@
         <text name="enum_sortMethod_power" text="Base Power (hp)" />
         <text name="enum_sortMethod_speed" text="Max speed" />
         <text name="enum_sortMethod_weight" text="Weight" />
+        <text name="enum_sortMethod_capacity" text="Capacity" />
         <text name="enum_sortMethod_workingwidth" text="Working Width" />
         <text name="enum_groupMethod_none" text="No, disable grouping" />
         <text name="enum_groupMethod_mods" text="Yes, group mods last" />

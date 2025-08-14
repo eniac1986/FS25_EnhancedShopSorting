@@ -21,8 +21,8 @@ SortMethod.NAME = 2
 SortMethod.SPEED = 3
 SortMethod.POWER = 4
 SortMethod.WEIGHT = 5
--- SortMethod.CAPACITY = 6
-SortMethod.WORKINGWIDTH = 6
+SortMethod.CAPACITY = 6
+SortMethod.WORKINGWIDTH = 7
 -- SortMethod.WORKINGSPEED = 8
 -- Enum(SortMethod)
 
@@ -90,7 +90,32 @@ function EnhancedShopSorting:sortDisplayItems(items)
         return t or default
     end
 
-    local function getWorkWidthMax(item)
+    local function getMaxCapacity(item)
+
+        local capacities = {0}
+        local capacity = safeGetValue(item, "specs.capacity") -- may be nil
+
+        if type(capacity)== "number" then
+            table.insert(capacities, capacity)
+        elseif type(capacity)== "table" then
+            for _, capacityConfiguration in pairs(capacity) do
+                for _, fillUnit in pairs(capacityConfiguration.fillUnits) do
+                    if fillUnit.capacity ~= nil and type(fillUnit.capacity)== "number" then
+                        if fillUnit.unit=="unit_cubicShort" then
+                            table.insert(capacities, fillUnit.capacity*1000)
+                        else
+                            table.insert(capacities, fillUnit.capacity)
+                        end
+                    end
+                end
+            end
+        end
+        local maxCapacity = math.max(table.unpack(capacities))
+        return maxCapacity
+    end
+
+
+    local function getMaxWorkWidth(item)
 
         local workWidths = {}
         local workWidth = safeGetValue(item, "specs.workingWidth") -- may be nil
@@ -114,7 +139,10 @@ function EnhancedShopSorting:sortDisplayItems(items)
         end
 
         local maxWidth = math.max(table.unpack(workWidths))
-        return maxWidth;
+        if maxWidth and maxWidth ~= 0 and maxWidth ~=nil then
+            return maxWidth;
+        end
+        return 0
     end
 
     local sortCallbacks = {}
@@ -167,10 +195,17 @@ function EnhancedShopSorting:sortDisplayItems(items)
         return applySortOptions(ensureUnique(item1, item2, weight1, weight2))
     end
 
+    sortCallbacks[SortMethod.CAPACITY] = function(item1, item2)
+        local item1, item2 = getItems(item1, item2)
+        local capacity1 = getMaxCapacity(item1)
+        local capacity2 = getMaxCapacity(item2)
+        return applySortOptions(ensureUnique(item1, item2, capacity1, capacity2))
+    end
+
     sortCallbacks[SortMethod.WORKINGWIDTH] = function(item1, item2)
         local item1, item2 = getItems(item1, item2)
-        local workingwidth1 = getWorkWidthMax(item1)
-        local workingwidth2 = getWorkWidthMax(item2)
+        local workingwidth1 = getMaxWorkWidth(item1)
+        local workingwidth2 = getMaxWorkWidth(item2)
         return applySortOptions(ensureUnique(item1, item2, workingwidth1, workingwidth2))
     end
 
