@@ -101,7 +101,7 @@ function EnhancedShopSorting:sortDisplayItems(items)
             for _, capacityConfiguration in pairs(capacity) do
                 for _, fillUnit in pairs(capacityConfiguration.fillUnits) do
                     if fillUnit.capacity ~= nil and type(fillUnit.capacity)== "number" then
-                        if fillUnit.unit=="unit_cubicShort" then
+                        if fillUnit.unit=="unit_cubicShort" then --unit_cubicShort
                             table.insert(capacities, fillUnit.capacity*1000)
                         else
                             table.insert(capacities, fillUnit.capacity)
@@ -117,11 +117,10 @@ function EnhancedShopSorting:sortDisplayItems(items)
 
     local function getMaxWorkWidth(item)
 
-        local workWidths = {}
+        local workWidths = {0}
         local workWidth = safeGetValue(item, "specs.workingWidth") -- may be nil
 
-        if workWidth and workWidth ~= 0 then
-            -- Fixed working width
+        if type(workWidth)== "number" then
             table.insert(workWidths, workWidth)
         else
             -- Either no working width or a variable one
@@ -133,16 +132,10 @@ function EnhancedShopSorting:sortDisplayItems(items)
                         table.insert(workWidths, workWidthEntry.width)
                     end
                 end
-            else
-                return 0;
             end
         end
-
         local maxWidth = math.max(table.unpack(workWidths))
-        if maxWidth and maxWidth ~= 0 and maxWidth ~=nil then
-            return maxWidth;
-        end
-        return 0
+        return maxWidth
     end
 
     local sortCallbacks = {}
