@@ -14,6 +14,7 @@
         <text name="enum_sortMethod_weight" text="Poids"/>
         <text name="enum_sortMethod_capacity" text="Capacité" />
         <text name="enum_sortMethod_workingwidth" text="Largeur de travail" />
+        <text name="enum_sortMethod_workingspeed" text="Vitesse de travail" />
         <text name="enum_groupMethod_none" text="Non, désactiver le regroupement"/>
         <text name="enum_groupMethod_mods" text="Oui, les mods de groupe durent"/>
         <text name="input_SORT_SHOP" text="Modifier le tri des magasins"/>

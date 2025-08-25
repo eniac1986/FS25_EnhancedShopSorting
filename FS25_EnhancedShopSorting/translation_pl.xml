@@ -16,6 +16,7 @@
         <text name="enum_sortMethod_weight" text="Waga" />
         <text name="enum_sortMethod_capacity" text="Wydajność" />
         <text name="enum_sortMethod_workingwidth" text="Szerokość robocza" />
+        <text name="enum_sortMethod_workingspeed" text="Prędkość robocza" />
         <text name="enum_groupMethod_none" text="Nie, wyłącz grupowanie" />
         <text name="enum_groupMethod_mods" text="Tak, zgrupowane mody jako ostatnie" />
     </texts>

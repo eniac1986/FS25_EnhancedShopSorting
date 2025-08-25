@@ -23,7 +23,7 @@ SortMethod.POWER = 4
 SortMethod.WEIGHT = 5
 SortMethod.CAPACITY = 6
 SortMethod.WORKINGWIDTH = 7
--- SortMethod.WORKINGSPEED = 8
+SortMethod.WORKINGSPEED = 8
 -- Enum(SortMethod)
 
 GroupMethod = {}
@@ -138,6 +138,17 @@ function EnhancedShopSorting:sortDisplayItems(items)
         return maxWidth
     end
 
+    local function getWorkingSpeed(item)
+
+        local workingSpeed = safeGetValue(item, "specs.speedLimit") -- may be nil
+
+        if workingSpeed and workingSpeed ~= 0 then
+            return workingSpeed
+        else
+            return 0
+        end
+    end
+
     local sortCallbacks = {}
 
     local function getItems(item1, item2)
@@ -201,6 +212,16 @@ function EnhancedShopSorting:sortDisplayItems(items)
         local workingwidth2 = getMaxWorkWidth(item2)
         return applySortOptions(ensureUnique(item1, item2, workingwidth1, workingwidth2))
     end
+
+
+    sortCallbacks[SortMethod.WORKINGSPEED] = function(item1, item2)
+        local item1, item2 = getItems(item1, item2)
+        local workingspeed1 = getWorkingSpeed(item1)
+        local workingspeed2 = getWorkingSpeed(item2)
+        return applySortOptions(ensureUnique(item1, item2, workingspeed1, workingspeed2))
+    end
+
+
 
     if sortCallbacks ~= nil then
         Log:table("sortCallbacks", sortCallbacks, 1)
